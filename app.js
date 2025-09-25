@@ -1,44 +1,53 @@
 const pasos = [
-  "Mezcla harina y agua para iniciar masa madre.",
-  "Deja reposar 24 horas.",
-  "Alimenta la masa madre con harina y agua, mezcla bien.",
-  "Deja reposar 24 horas.",
-  "Repite alimentación y reposo hasta que burbujee."
+  `Día 1: Mezcla inicial
+  - En un recipiente limpio, mezcla 100 gramos de harina (preferentemente integral o de fuerza) con 100 gramos de agua a temperatura ambiente.
+  - Remueve bien para que no queden grumos.
+  - Cubre con un paño o tapa sin ajustar para que entre aire.
+  - Deja reposar en un lugar cálido (20-22 °C) durante 24 horas.
+  
+  Nota: Es normal que aún no se vean burbujas ni actividad visible.`,
+
+  `Día 2: Primera alimentación
+  - Descarta la mitad de la mezcla del día anterior.
+  - Añade 100 gramos de harina y 100 gramos de agua.
+  - Mezcla bien y cubre de nuevo.
+  - Deja reposar otras 24 horas en lugar cálido.
+  
+  Observa: Podrás empezar a notar burbujas pequeñas y olor ácido.`,
+
+  `Día 3 a 5: Alimentación diaria
+  - Cada día, descarta la mitad de la mezcla.
+  - Alimenta nuevamente con 100 gramos de harina y 100 gramos de agua.
+  - Mezcla bien, cubre y deja reposar 24 horas.
+  
+  Consejos:
+  - Aparecerán más burbujas.
+  - El olor puede ser un poco ácido o afrutado, es normal.
+  - La mezcla empezará a crecer y bajar (fermentar).`,
+
+  `Día 6: Prueba de flotación
+  - Toma una pequeña porción de masa madre.
+  - Colócala en un vaso con agua.
+  - Si flota, está lista para usar en panificación.
+  - Si no flota, sigue alimentando y deja fermentar algunos días más.`,
+
+  `Día 7: Uso y mantenimiento
+  - Si la masa madre está lista, úsala para tus recetas.
+  - Guarda una porción en refrigeración y aliméntala semanalmente.
+  - Antes de usarla, aliméntala y déjala a temperatura ambiente para activarla.`
 ];
 
 let estado = JSON.parse(localStorage.getItem('masaMadreEstado')) || { pasoActual: 0, tiempoInicio: null };
-// Asegurar historial como arreglo
-let historial = JSON.parse(localStorage.getItem('masaMadreHistorial'));
-if (!Array.isArray(historial)) historial = [];
 
 const pasoDescElem = document.getElementById('stepDescription');
 const tiempoRestElem = document.getElementById('timeRemaining');
 const botonHecho = document.getElementById('markDoneButton');
 
-const historialSelect = document.getElementById('historialSelect');
-const detalleHistorial = document.getElementById('detalleHistorial');
-
 function mostrarEstado() {
   if (estado.pasoActual >= pasos.length) {
-    pasoDescElem.textContent = "Proceso completado. ¡Felicidades!";
+    pasoDescElem.textContent = "¡Felicidades! El proceso de masa madre ha finalizado.\nPuedes empezar a usar tu masa madre para hacer deliciosos panes.";
     tiempoRestElem.textContent = "";
     botonHecho.disabled = true;
-
-    // Guardar fecha de finalización en historial y lo actualizamos localStorage correctamente
-    let fechaFin = new Date().toLocaleString();
-    // Añade la fecha al historial
-    historial.push(fechaFin);
-    // Guardar el arreglo actualizado como cadena JSON en localStorage
-    localStorage.setItem('masaMadreHistorial', JSON.stringify(historial));
-
-    mostrarHistorial();
-
-    setTimeout(() => {
-      estado = { pasoActual: 0, tiempoInicio: null };
-      botonHecho.disabled = false;
-      guardarEstado();
-      mostrarEstado();
-    }, 3000);
     return;
   }
 
@@ -51,10 +60,9 @@ function mostrarEstado() {
 
     if (tiempoRestanteMs <= 0) {
       tiempoRestElem.textContent = "¡Es hora del siguiente paso!";
-      enviarNotificacion();
     } else {
-      let horas = Math.floor(tiempoRestanteMs / (1000 * 60 * 60));
-      let minutos = Math.floor((tiempoRestanteMs % (1000 * 60 * 60)) / (1000 * 60));
+      const horas = Math.floor(tiempoRestanteMs / (1000 * 60 * 60));
+      const minutos = Math.floor((tiempoRestanteMs % (1000 * 60 * 60)) / (1000 * 60));
       tiempoRestElem.textContent = `Tiempo para siguiente paso: ${horas}h ${minutos}m`;
     }
   } else {
@@ -73,55 +81,4 @@ botonHecho.addEventListener('click', () => {
   mostrarEstado();
 });
 
-function llenarHistorialSelect() {
-  // Limpiar opciones previas excepto primera
-  historialSelect.innerHTML = '<option value="">Selecciona una fecha</option>';
-  historial.forEach((fecha, index) => {
-    const option = document.createElement('option');
-    option.value = index;
-    option.textContent = fecha;
-    historialSelect.appendChild(option);
-  });
-}
-
-historialSelect.addEventListener('change', () => {
-  const indexSeleccionado = historialSelect.value;
-  if (indexSeleccionado === "") {
-    detalleHistorial.textContent = "";
-  } else {
-    detalleHistorial.textContent = "Proceso completado el día: " + historial[indexSeleccionado];
-  }
-});
-
-function mostrarHistorial() {
-  if (historial.length === 0) {
-    detalleHistorial.textContent = "No hay historial de masas terminadas aún.";
-    historialSelect.innerHTML = '<option value="">No hay fechas disponibles</option>';
-    return;
-  }
-  llenarHistorialSelect();
-  detalleHistorial.textContent = "";
-}
-
-function solicitarPermisoNotificacion() {
-  if ("Notification" in window) {
-    if (Notification.permission === "default") {
-      Notification.requestPermission();
-    }
-  }
-}
-
-function enviarNotificacion() {
-  if ("Notification" in window && Notification.permission === "granted") {
-    new Notification("Proceso Masa Madre", {
-      body: "¡Ya pasó un día! Es hora de hacer el siguiente paso.",
-      icon: "https://cdn-icons-png.flaticon.com/512/616/616408.png"
-    });
-  }
-}
-
-setInterval(mostrarEstado, 60000);
-
-solicitarPermisoNotificacion();
 mostrarEstado();
-mostrarHistorial();
