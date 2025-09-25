@@ -10,24 +10,25 @@ let historial = JSON.parse(localStorage.getItem('masaMadreHistorial')) || [];
 const pasoDescElem = document.getElementById('stepDescription');
 const tiempoRestElem = document.getElementById('timeRemaining');
 const botonHecho = document.getElementById('markDoneButton');
-const historialElem = document.getElementById('historial'); // nuevo div para historial
+const historialSelect = document.getElementById('historialSelect');
+const detalleHistorial = document.getElementById('detalleHistorial');
 function mostrarEstado() {
   if (estado.pasoActual >= pasos.length) {
     pasoDescElem.textContent = "Proceso completado. ¡Felicidades!";
     tiempoRestElem.textContent = "";
     botonHecho.disabled = true;
-    // Guardar fecha de finalización en historial
+    // Guaración en historia
     let fechaFin = new Date().toLocaleString();
     historial.push(fechaFin);
     localStorage.setItem('masaMadreHistorial', JSON.stringify(historial));
     mostrarHistorial();
-    // Reiniciar para nuevo proceso
+    // Reiniciar para nuevo proceso tras 3 segundos
     setTimeout(() => {
       estado = { pasoActual: 0, tiempoInicio: null };
       botonHecho.disabled = false;
       guardarEstado();
       mostrarEstado();
-    }, 3000); // Esperar 3 segundos para mostrar mensaje
+    }, 3000);
     return;
   }
   pasoDescElem.textContent = pasos[estado.pasoActual];
@@ -39,8 +40,8 @@ function mostrarEstado() {
       tiempoRestElem.textContent = "¡Es hora del siguiente paso!";
       enviarNotificacion();
     } else {
-      let horas = Math.floor(tiempoRestanteMs / (1000*60*60));
-      let minutos = Math.floor((tiempoRestanteMs % (1000*60*60)) / (1000*60));
+      let horas = Math.floor(tiempoRestanteMs / (1000 * 60 * 60));
+      let minutos = Math.floor((tiempoRestanteMs % (1000 * 60 * 60)) / (1000 * 60));
       tiempoRestElem.textContent = `Tiempo para siguiente paso: ${horas}h ${minutos}m`;
     }
   } else {
@@ -56,19 +57,35 @@ botonHecho.addEventListener('click', () => {
   guardarEstado();
   mostrarEstado();
 });
+// Función para llenar el menú desplegable con el historial
+function llenarHistorialSelect() {
+  historialSelect.innerHTML = '<option value="">Selecciona una fecha</option>';
+  historial.forEach((fecha, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+    option.textContent = fecha;
+    historialSelect.appendChild(option);
+  });
+}
+historialSelect.addEventListener('change', () => {
+  const indexSeleccionado = historialSelect.value;
+  if (indexSeleccionado === "") {
+    detalleHistorial.textContent = "";
+  } else {
+    detalleHistorial.textContent = "Proceso completado el día: " + historial[indexSeleccionado];
+  }
+});
+// Mostrar historial en el menú y mensaje
 function mostrarHistorial() {
-  if (!historialElem) return;
   if (historial.length === 0) {
-    historialElem.innerHTML = "<p>No hay historial de masas terminadas aún.</p>";
+    detalleHistorial.textContent = "No hay historial de masas terminadas aún.";
+    historialSelect.innerHTML = '<option value="">No hay fechas disponibles</option>';
     return;
   }
-  let html = "<h3>Historial de masas terminadas:</h3><ul>";
-  historial.forEach(fecha => {
-    html += `<li>${fecha}</li>`;
-  });
-  html += "</ul>";
-  historialElem.innerHTML = html;
+  llenarHistorialSelect();
+  detalleHistorial.textContent = "";
 }
+// Solicitar permiso para notificaciones
 function solicitarPermisoNotificacion() {
   if ("Notification" in window) {
     if (Notification.permission === "default") {
@@ -76,6 +93,7 @@ function solicitarPermisoNotificacion() {
     }
   }
 }
+// Enviar notificación
 function enviarNotificacion() {
   if ("Notification" in window && Notification.permission === "granted") {
     new Notification("Proceso Masa Madre", {
@@ -84,8 +102,8 @@ function enviarNotificacion() {
     });
   }
 }
-setInterval(mostrarEstado, 60000);
-// Mostrar estado e historial al inicio
+setInterval(mostrarEstado, 60000);  // Actualizar cada minuto
+// Inicialización
 solicitarPermisoNotificacion();
 mostrarEstado();
 mostrarHistorial();
