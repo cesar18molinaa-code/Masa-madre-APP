@@ -1,9 +1,9 @@
 const pasos = [
   `Día 1:
-- Mezcla inicial: en un recipiente limpio, mezcla 100 gramos de harina con 100 mililitros de agua.
+- Mezcla inicial: en un recipiente limpio, mezcla 100 gramos de harina con 100 gramos de agua.
 - Remueve hasta que no queden grumos.
 - Cubre con un paño y deja reposar a temperatura ambiente durante 24 horas.
-  
+
 Nota: No esperes actividad visible todavía.`,
 
   `Día 2:
@@ -23,7 +23,7 @@ Observa burbujas pequeñas y un olor algo ácido.`,
 
   `Día 5:
 - Igual que día 3 y 4, continúa alimentando y dejando reposar.`,
-  
+
   `Día 6:
 - Prueba de flotación: toma una porción pequeña y colócala en agua.
 - Si flota, está lista para usar.
@@ -32,15 +32,84 @@ Observa burbujas pequeñas y un olor algo ácido.`,
   `Día 7:
 - Uso y mantenimiento: usa para panificación.
 - Guarda en refrigeración y alimenta semanalmente.
-- Antes de uso, alimenta para reactivar.`
+- Antes de usarla, aliméntala y déjala a temperatura ambiente para activarla.`
 ];
 
+const recetas = [
+  {
+    nombre: "Pan de Masa Madre Tradicional",
+    ingredientes: [
+      "500 g harina de trigo",
+      "300 g agua",
+      "150 g masa madre activa",
+      "10 g sal"
+    ],
+    variantes: [
+      "Puedes reemplazar 100 g de harina de trigo por harina integral.",
+      "Añade semillas (girasol, linaza) para un pan más nutritivo."
+    ],
+    pasos: [
+      "Mezcla la harina y el agua hasta obtener una masa homogénea.",
+      "Deja reposar 30 min (autólisis).",
+      "Agrega la masa madre y la sal, mezcla bien.",
+      "Deja fermentar la masa durante 4-6 horas, realizando pliegues cada 1.5 horas.",
+      "Forma el pan y déjalo reposar 2 horas más (prueba final).",
+      "Hornea a 230°C durante 40 minutos."
+    ]
+  },
+  {
+    nombre: "Panecillos de Masa Madre",
+    ingredientes: [
+      "400 g harina de trigo",
+      "250 g agua",
+      "100 g masa madre activa",
+      "8 g sal",
+      "15 g azúcar"
+    ],
+    variantes: [
+      "Puedes añadir mezcla de semillas para topping.",
+      "Se pueden hacer integrales usando 200 g harina integral."
+    ],
+    pasos: [
+      "Mezcla harina, agua, masa madre y azúcar.",
+      "Deja reposar 1 hora.",
+      "Agrega la sal y amasa bien.",
+      "Deja fermentar 3-4 horas con doblados cada hora.",
+      "Forma panecillos y deja reposar 1 hora más.",
+      "Hornea a 220°C por 20-25 minutos."
+    ]
+  },
+  {
+    nombre: "Pizza con Masa Madre",
+    ingredientes: [
+      "400 g harina de trigo",
+      "250 g agua",
+      "120 g masa madre activa",
+      "8 g sal",
+      "15 g aceite de oliva"
+    ],
+    variantes: [
+      "Puedes usar solo harina de fuerza para una masa más elástica.",
+      "Añade hierbas secas en la masa para más sabor."
+    ],
+    pasos: [
+      "Mezcla la harina y agua y deja reposar 30 minutos.",
+      "Incorpora la masa madre, sal y aceite.",
+      "Amasa y deja fermentar 6-8 horas en refrigeración.",
+      "Saca masa, forma la base y añade ingredientes.",
+      "Hornea a 250°C por 10-15 minutos."
+    ]
+  }
+];
+
+// Estado inicial
 let estado = JSON.parse(localStorage.getItem('masaMadreEstado')) || { pasoActual: 0, tiempoInicio: null };
 
 const pasoDescElem = document.getElementById('stepDescription');
 const tiempoRestElem = document.getElementById('timeRemaining');
 const botonHecho = document.getElementById('markDoneButton');
 const botonReset = document.getElementById('resetButton');
+const recetasContainer = document.getElementById('recetasContainer');
 
 function mostrarEstado() {
   if (estado.pasoActual >= pasos.length) {
@@ -83,7 +152,6 @@ botonHecho.addEventListener('click', () => {
   }
 });
 
-// Función para reiniciar el progreso al primer paso
 botonReset.addEventListener('click', () => {
   estado = { pasoActual: 0, tiempoInicio: null };
   guardarEstado();
@@ -91,4 +159,57 @@ botonReset.addEventListener('click', () => {
   mostrarEstado();
 });
 
+// Mostrar recetas en el HTML
+function mostrarRecetas() {
+  recetasContainer.innerHTML = "";
+
+  recetas.forEach((receta) => {
+    const divReceta = document.createElement('div');
+    divReceta.className = "receta";
+
+    const titulo = document.createElement('h3');
+    titulo.textContent = receta.nombre;
+    divReceta.appendChild(titulo);
+
+    const ingLabel = document.createElement('strong');
+    ingLabel.textContent = "Ingredientes:";
+    divReceta.appendChild(ingLabel);
+
+    const ulIngredientes = document.createElement('ul');
+    receta.ingredientes.forEach((ing) => {
+      const li = document.createElement('li');
+      li.textContent = ing;
+      ulIngredientes.appendChild(li);
+    });
+    divReceta.appendChild(ulIngredientes);
+
+    const varLabel = document.createElement('strong');
+    varLabel.textContent = "Variantes posibles:";
+    divReceta.appendChild(varLabel);
+
+    const ulVariantes = document.createElement('ul');
+    receta.variantes.forEach((v) => {
+      const li = document.createElement('li');
+      li.textContent = v;
+      ulVariantes.appendChild(li);
+    });
+    divReceta.appendChild(ulVariantes);
+
+    const pasosLabel = document.createElement('strong');
+    pasosLabel.textContent = "Pasos para preparar:";
+    divReceta.appendChild(pasosLabel);
+
+    const ulPasos = document.createElement('ul');
+    receta.pasos.forEach((p) => {
+      const li = document.createElement('li');
+      li.textContent = p;
+      ulPasos.appendChild(li);
+    });
+    divReceta.appendChild(ulPasos);
+
+    recetasContainer.appendChild(divReceta);
+  });
+}
+
 mostrarEstado();
+mostrarRecetas();
