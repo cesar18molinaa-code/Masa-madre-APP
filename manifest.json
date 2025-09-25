@@ -1,20 +1,53 @@
-{
-  "name": "Masa Madre Progreso",
-  "short_name": "MasaMadre",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#d84315",
-  "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
-}
+name: Desplegar Masa Madre APP
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  build-masa-madre-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Construir aplicación Masa Madre APP
+        run: npx ng build --configuration production --base-href "/masa-madre-app/"
+
+      - name: Agregar archivo .nojekyll para GitHub Pages
+        run: echo "" > dist/masa-madre-app/browser/.nojekyll
+
+      - name: Subir artefacto de Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/masa-madre-app/browser
+
+  deploy-masa-madre-app:
+    needs: build-masa-madre-app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Desplegar Masa Madre APP en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
