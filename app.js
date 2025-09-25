@@ -1,6 +1,6 @@
 const pasos = [
   `Día 1:
-- Mezcla inicial: en un recipiente limpio, mezcla 100 gramos de harina con 100 gramos de agua.
+- Mezcla inicial: en un recipiente limpio, mezcla 100 gramos de harina con 100 mililitros de agua.
 - Remueve hasta que no queden grumos.
 - Cubre con un paño y deja reposar a temperatura ambiente durante 24 horas.
 
@@ -99,10 +99,34 @@ const recetas = [
       "Saca masa, forma la base y añade ingredientes.",
       "Hornea a 250°C por 10-15 minutos."
     ]
+  },
+  {
+    nombre: "Pan Dulce de Masa Madre",
+    ingredientes: [
+      "400 g harina de trigo",
+      "200 g masa madre activa",
+      "100 g azúcar",
+      "125 ml leche tibia",
+      "50 g mantequilla a temperatura ambiente",
+      "2 huevos",
+      "5 g sal",
+      "1 cucharadita de esencia de vainilla"
+    ],
+    variantes: [
+      "Agrega pasas o frutas secas para un pan dulce más sabroso.",
+      "Puede cubrirse con glaseado de azúcar o canela."
+    ],
+    pasos: [
+      "Mezcla harina, masa madre, azúcar y leche.",
+      "Agrega huevos y mezcla bien.",
+      "Incorpora mantequilla, sal y vainilla, y amasa hasta masa suave.",
+      "Deja fermentar 4-5 horas con doblados cada 1.5 horas.",
+      "Forma la masa en bollos pequeños y deja reposar 1-2 horas más.",
+      "Hornea a 180°C durante 20-25 minutos."
+    ]
   }
 ];
 
-// Estado inicial
 let estado = JSON.parse(localStorage.getItem('masaMadreEstado')) || { pasoActual: 0, tiempoInicio: null };
 
 const pasoDescElem = document.getElementById('stepDescription');
@@ -159,7 +183,6 @@ botonReset.addEventListener('click', () => {
   mostrarEstado();
 });
 
-// Mostrar recetas en el HTML
 function mostrarRecetas() {
   recetasContainer.innerHTML = "";
 
@@ -211,5 +234,7 @@ function mostrarRecetas() {
   });
 }
 
-mostrarEstado();
-mostrarRecetas();
+document.addEventListener("DOMContentLoaded", () => {
+  mostrarEstado();
+  mostrarRecetas();
+});
