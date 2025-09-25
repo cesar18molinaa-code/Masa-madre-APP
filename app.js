@@ -5,24 +5,34 @@ const pasos = [
   "Deja reposar 24 horas.",
   "Repite alimentación y reposo hasta que burbujee."
 ];
+
 let estado = JSON.parse(localStorage.getItem('masaMadreEstado')) || { pasoActual: 0, tiempoInicio: null };
-let historial = JSON.parse(localStorage.getItem('masaMadreHistorial')) || [];
+// Asegurar historial como arreglo
+let historial = JSON.parse(localStorage.getItem('masaMadreHistorial'));
+if (!Array.isArray(historial)) historial = [];
+
 const pasoDescElem = document.getElementById('stepDescription');
 const tiempoRestElem = document.getElementById('timeRemaining');
 const botonHecho = document.getElementById('markDoneButton');
+
 const historialSelect = document.getElementById('historialSelect');
 const detalleHistorial = document.getElementById('detalleHistorial');
+
 function mostrarEstado() {
   if (estado.pasoActual >= pasos.length) {
     pasoDescElem.textContent = "Proceso completado. ¡Felicidades!";
     tiempoRestElem.textContent = "";
     botonHecho.disabled = true;
-    // Guaración en historia
+
+    // Guardar fecha de finalización en historial y lo actualizamos localStorage correctamente
     let fechaFin = new Date().toLocaleString();
+    // Añade la fecha al historial
     historial.push(fechaFin);
+    // Guardar el arreglo actualizado como cadena JSON en localStorage
     localStorage.setItem('masaMadreHistorial', JSON.stringify(historial));
+
     mostrarHistorial();
-    // Reiniciar para nuevo proceso tras 3 segundos
+
     setTimeout(() => {
       estado = { pasoActual: 0, tiempoInicio: null };
       botonHecho.disabled = false;
@@ -31,11 +41,14 @@ function mostrarEstado() {
     }, 3000);
     return;
   }
+
   pasoDescElem.textContent = pasos[estado.pasoActual];
+
   if (estado.tiempoInicio) {
     const tiempoTranscurrido = Date.now() - estado.tiempoInicio;
     const unDiaMs = 24 * 60 * 60 * 1000;
     const tiempoRestanteMs = unDiaMs - tiempoTranscurrido;
+
     if (tiempoRestanteMs <= 0) {
       tiempoRestElem.textContent = "¡Es hora del siguiente paso!";
       enviarNotificacion();
@@ -48,17 +61,20 @@ function mostrarEstado() {
     tiempoRestElem.textContent = "Presiona 'Marcar paso como hecho' para iniciar.";
   }
 }
+
 function guardarEstado() {
   localStorage.setItem('masaMadreEstado', JSON.stringify(estado));
 }
+
 botonHecho.addEventListener('click', () => {
   estado.pasoActual++;
   estado.tiempoInicio = Date.now();
   guardarEstado();
   mostrarEstado();
 });
-// Función para llenar el menú desplegable con el historial
+
 function llenarHistorialSelect() {
+  // Limpiar opciones previas excepto primera
   historialSelect.innerHTML = '<option value="">Selecciona una fecha</option>';
   historial.forEach((fecha, index) => {
     const option = document.createElement('option');
@@ -67,6 +83,7 @@ function llenarHistorialSelect() {
     historialSelect.appendChild(option);
   });
 }
+
 historialSelect.addEventListener('change', () => {
   const indexSeleccionado = historialSelect.value;
   if (indexSeleccionado === "") {
@@ -75,7 +92,7 @@ historialSelect.addEventListener('change', () => {
     detalleHistorial.textContent = "Proceso completado el día: " + historial[indexSeleccionado];
   }
 });
-// Mostrar historial en el menú y mensaje
+
 function mostrarHistorial() {
   if (historial.length === 0) {
     detalleHistorial.textContent = "No hay historial de masas terminadas aún.";
@@ -85,7 +102,7 @@ function mostrarHistorial() {
   llenarHistorialSelect();
   detalleHistorial.textContent = "";
 }
-// Solicitar permiso para notificaciones
+
 function solicitarPermisoNotificacion() {
   if ("Notification" in window) {
     if (Notification.permission === "default") {
@@ -93,7 +110,7 @@ function solicitarPermisoNotificacion() {
     }
   }
 }
-// Enviar notificación
+
 function enviarNotificacion() {
   if ("Notification" in window && Notification.permission === "granted") {
     new Notification("Proceso Masa Madre", {
@@ -102,8 +119,9 @@ function enviarNotificacion() {
     });
   }
 }
-setInterval(mostrarEstado, 60000);  // Actualizar cada minuto
-// Inicialización
+
+setInterval(mostrarEstado, 60000);
+
 solicitarPermisoNotificacion();
 mostrarEstado();
 mostrarHistorial();
