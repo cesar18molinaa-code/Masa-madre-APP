@@ -8,48 +8,42 @@
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
+      max-width: 600px;
     }
-    #container {
-      display: flex;
-      gap: 20px;
+    #stepDescription {
+      margin-bottom: 15px;
+      white-space: pre-wrap;
+      background: #f9f9f9;
+      padding: 12px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
     }
-    #mainContent {
-      flex: 3;
-    }
-    #menuHistorial {
-      flex: 1;
-      border-left: 1px solid #eee;
-      padding-left: 15px;
-    }
-    label, select {
-      display: block;
-      margin-bottom: 10px;
+    #timeRemaining {
+      margin-bottom: 20px;
       font-weight: bold;
     }
-    #detalleHistorial {
-      font-style: italic;
-      margin-top: 10px;
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+    }
+    button:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
   <h1>Progreso Masa Madre</h1>
-  <div id="container">
-    <div id="mainContent">
-      <div id="stepDescription"></div>
-      <div id="timeRemaining" style="margin-bottom: 15px;"></div>
-      <button id="markDoneButton">Marcar paso como hecho</button>
-    </div>
-    
-    <div id="menuHistorial">
-      <label for="historialSelect">Historial de masas terminadas:</label>
-      <select id="historialSelect">
-        <option value="">Selecciona una fecha</option>
-      </select>
-      <div id="detalleHistorial"></div>
-    </div>
-  </div>
+  <div id="stepDescription"></div>
+  <div id="timeRemaining"></div>
+  <button id="markDoneButton">Marcar paso como hecho</button>
 
   <script src="./app.js"></script>
 </body>
 </html>
+
