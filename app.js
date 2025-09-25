@@ -42,20 +42,14 @@ let estado = JSON.parse(localStorage.getItem('masaMadreEstado')) || { pasoActual
 const pasoDescElem = document.getElementById('stepDescription');
 const tiempoRestElem = document.getElementById('timeRemaining');
 const botonHecho = document.getElementById('markDoneButton');
+const botonReset = document.getElementById('resetButton');
 
 function mostrarEstado() {
   if (estado.pasoActual >= pasos.length) {
-    pasoDescElem.textContent = "¡Felicidades! El proceso de masa madre ha finalizado.\nPuedes empezar a usar tu masa madre para hacer deliciosos panes.";
+    pasoDescElem.textContent =
+      "¡Felicidades! El proceso de masa madre ha finalizado.\nPuedes empezar a usar tu masa madre para hacer deliciosos panes.";
     tiempoRestElem.textContent = "";
     botonHecho.disabled = true;
-
-    // Espera 3 segundos, luego reinicia
-    setTimeout(() => {
-      estado = { pasoActual: 0, tiempoInicio: null };
-      guardarEstado();
-      botonHecho.disabled = false;
-      mostrarEstado();
-    }, 3000);
     return;
   }
 
@@ -83,9 +77,19 @@ function guardarEstado() {
 }
 
 botonHecho.addEventListener('click', () => {
-  estado.pasoActual++;
-  estado.tiempoInicio = Date.now();
+  if (estado.pasoActual < pasos.length) {
+    estado.pasoActual++;
+    estado.tiempoInicio = Date.now();
+    guardarEstado();
+    mostrarEstado();
+  }
+});
+
+// Función para reiniciar el progreso al primer paso
+botonReset.addEventListener('click', () => {
+  estado = { pasoActual: 0, tiempoInicio: null };
   guardarEstado();
+  botonHecho.disabled = false;
   mostrarEstado();
 });
 
