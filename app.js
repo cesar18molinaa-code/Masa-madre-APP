@@ -1,7 +1,7 @@
 const pasos = [
   `Día 1: Mezcla inicial
-  - En un recipiente limpio, mezcla 100 gramos de harina (preferentemente integral o de fuerza) con 100 gramos de agua a temperatura ambiente.
-  - Remueve bien para que no queden grumos.
+  - En un recipiente limpio, mezcla 100 gramos de harina (preferentemente integral o de fuerza) con 100 ml de agua a temperatura ambiente.
+  - Revuelve bien para que no queden grumos.
   - Cubre con un paño o tapa sin ajustar para que entre aire.
   - Deja reposar en un lugar cálido (20-22 °C) durante 24 horas.
   
