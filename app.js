@@ -49,12 +49,10 @@ function mostrarEstado() {
     tiempoRestElem.textContent = "";
     botonHecho.disabled = true;
 
-    // Espera 3 segundos, luego reinicia estado
+    // Espera 3 segundos, luego reinicia
     setTimeout(() => {
       estado = { pasoActual: 0, tiempoInicio: null };
       guardarEstado();
-
-      pasoDescElem.textContent = pasos[estado.pasoActual];
       botonHecho.disabled = false;
       mostrarEstado();
     }, 3000);
