@@ -4,23 +4,51 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Masa Madre Progreso</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #container {
+      display: flex;
+      gap: 20px;
+    }
+    #mainContent {
+      flex: 3;
+    }
+    #menuHistorial {
+      flex: 1;
+      border-left: 1px solid #eee;
+      padding-left: 15px;
+    }
+    label, select {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    #detalleHistorial {
+      font-style: italic;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
   <h1>Progreso Masa Madre</h1>
-  
-  <div id="stepDescription"></div>
-  <div id="timeRemaining" style="margin-bottom: 15px;"></div>
-  
-  <button id="markDoneButton">Marcar paso como hecho</button>
-
-  <hr style="margin: 20px 0;" />
-
-  <!-- Menú desplegable para historial -->
-  <label for="historialSelect">Historial de masas terminadas:</label>
-  <select id="historialSelect">
-    <option value="">Selecciona una fecha</option>
-  </select>
-  <div id="detalleHistorial" style="margin-top: 15px; font-style: italic;"></div>
+  <div id="container">
+    <div id="mainContent">
+      <div id="stepDescription"></div>
+      <div id="timeRemaining" style="margin-bottom: 15px;"></div>
+      <button id="markDoneButton">Marcar paso como hecho</button>
+    </div>
+    
+    <div id="menuHistorial">
+      <label for="historialSelect">Historial de masas terminadas:</label>
+      <select id="historialSelect">
+        <option value="">Selecciona una fecha</option>
+      </select>
+      <div id="detalleHistorial"></div>
+    </div>
+  </div>
 
   <script src="./app.js"></script>
 </body>
