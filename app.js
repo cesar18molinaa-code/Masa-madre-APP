@@ -5,28 +5,22 @@ const pasos = [
   "Deja reposar 24 horas.",
   "Repite alimentación y reposo hasta que burbujee."
 ];
-
 let estado = JSON.parse(localStorage.getItem('masaMadreEstado')) || { pasoActual: 0, tiempoInicio: null };
 let historial = JSON.parse(localStorage.getItem('masaMadreHistorial')) || [];
-
 const pasoDescElem = document.getElementById('stepDescription');
 const tiempoRestElem = document.getElementById('timeRemaining');
 const botonHecho = document.getElementById('markDoneButton');
 const historialElem = document.getElementById('historial'); // nuevo div para historial
-
 function mostrarEstado() {
   if (estado.pasoActual >= pasos.length) {
     pasoDescElem.textContent = "Proceso completado. ¡Felicidades!";
     tiempoRestElem.textContent = "";
     botonHecho.disabled = true;
-
     // Guardar fecha de finalización en historial
     let fechaFin = new Date().toLocaleString();
     historial.push(fechaFin);
     localStorage.setItem('masaMadreHistorial', JSON.stringify(historial));
-
     mostrarHistorial();
-
     // Reiniciar para nuevo proceso
     setTimeout(() => {
       estado = { pasoActual: 0, tiempoInicio: null };
@@ -34,17 +28,13 @@ function mostrarEstado() {
       guardarEstado();
       mostrarEstado();
     }, 3000); // Esperar 3 segundos para mostrar mensaje
-
     return;
   }
-
   pasoDescElem.textContent = pasos[estado.pasoActual];
-
   if (estado.tiempoInicio) {
     const tiempoTranscurrido = Date.now() - estado.tiempoInicio;
     const unDiaMs = 24 * 60 * 60 * 1000;
     const tiempoRestanteMs = unDiaMs - tiempoTranscurrido;
-
     if (tiempoRestanteMs <= 0) {
       tiempoRestElem.textContent = "¡Es hora del siguiente paso!";
       enviarNotificacion();
@@ -57,18 +47,15 @@ function mostrarEstado() {
     tiempoRestElem.textContent = "Presiona 'Marcar paso como hecho' para iniciar.";
   }
 }
-
 function guardarEstado() {
   localStorage.setItem('masaMadreEstado', JSON.stringify(estado));
 }
-
 botonHecho.addEventListener('click', () => {
   estado.pasoActual++;
   estado.tiempoInicio = Date.now();
   guardarEstado();
   mostrarEstado();
 });
-
 function mostrarHistorial() {
   if (!historialElem) return;
   if (historial.length === 0) {
@@ -82,7 +69,6 @@ function mostrarHistorial() {
   html += "</ul>";
   historialElem.innerHTML = html;
 }
-
 function solicitarPermisoNotificacion() {
   if ("Notification" in window) {
     if (Notification.permission === "default") {
@@ -90,7 +76,6 @@ function solicitarPermisoNotificacion() {
     }
   }
 }
-
 function enviarNotificacion() {
   if ("Notification" in window && Notification.permission === "granted") {
     new Notification("Proceso Masa Madre", {
@@ -99,9 +84,7 @@ function enviarNotificacion() {
     });
   }
 }
-
 setInterval(mostrarEstado, 60000);
-
 // Mostrar estado e historial al inicio
 solicitarPermisoNotificacion();
 mostrarEstado();
