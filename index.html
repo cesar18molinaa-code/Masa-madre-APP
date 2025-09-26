@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Masa Madre Progreso</title>
+  <title>Masa Madre y Más</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -36,7 +36,7 @@
       background-color: #aaa;
       cursor: not-allowed;
     }
-    #recetasSection {
+    #recetasSection, #mantequillaMagicaSection {
       margin-top: 40px;
       border-top: 2px solid #555;
       padding-top: 20px;
@@ -44,14 +44,14 @@
     h2 {
       margin-top: 0;
     }
-    .receta {
+    .receta, .mantequilla {
       border: 1px solid #ccc;
       padding: 15px;
       border-radius: 6px;
       margin-bottom: 25px;
       background: #fefefe;
     }
-    .receta h3 {
+    .receta h3, .mantequilla h3 {
       margin-top: 0;
     }
     ul {
@@ -61,7 +61,7 @@
   </style>
 </head>
 <body>
-  <h1>Progreso Masa Madre</h1>
+  <h1>Progreso Masa Madre y Más</h1>
   <div id="stepDescription"></div>
   <div id="timeRemaining"></div>
   <button id="markDoneButton">Marcar paso como hecho</button>
@@ -70,6 +70,13 @@
   <section id="recetasSection">
     <h2>Recetas con Masa Madre</h2>
     <div id="recetasContainer"></div>
+  </section>
+
+  <section id="mantequillaMagicaSection">
+    <h2>Mantequilla Mágica</h2>
+    <div id="mantequillaPaso" class="mantequilla"></div>
+    <button id="mantequillaSiguienteBtn">Siguiente Paso</button>
+    <button id="mantequillaRepetirBtn">Repetir</button>
   </section>
 
   <script src="./app.js"></script>
