@@ -1,6 +1,6 @@
 const pasos = [
   `Día 1:
-- Mezcla inicial: en un recipiente limpio, mezcla 100 gramos de harina con 100 mililitros de agua.
+- Mezcla inicial: en un recipiente limpio, mezcla 100 gramos de harina con 100 gramos de agua.
 - Remueve hasta que no queden grumos.
 - Cubre con un paño y deja reposar a temperatura ambiente durante 24 horas.
 
@@ -127,13 +127,30 @@ const recetas = [
   }
 ];
 
+// Mantequilla Mágica pasos
+const mantequillaMagicaPasos = [
+  "Descarboxilar el cannabis: Hornea el material vegetal a 110-115°C durante 30-40 minutos para activar los compuestos (THC/CBD).",
+  "Derretir la mantequilla: Coloca la mantequilla en una olla junto con el agua y derrítela a fuego medio-bajo.",
+  "Agregar el cannabis: Añade el cannabis descarboxilado a la mantequilla derretida con agua.",
+  "Cocinar a fuego lento: Mantén la mezcla a fuego bajo para que hierva suavemente durante 2 a 3 horas, removiendo ocasionalmente. Esto permite que los cannabinoides se unan a la grasa de la mantequilla y que la clorofila y otros residuos se disuelvan en el agua.",
+  "Colar la mezcla: Usa un colador para separar los restos vegetales de la mantequilla infusionada.",
+  "Enfriar y solidificar: Vierte la mezcla colada en un recipiente y refrigera durante 12 horas o hasta que la mantequilla se solidifique, separándose del agua que quedará en el fondo.",
+  "Separar el agua: Una vez sólida, presiona el recipiente para soltar la mantequilla y desecha el agua.",
+  "Guardar: Conserva la mantequilla mágica en un recipiente hermético en el refrigerador o congelador."
+];
+
 let estado = JSON.parse(localStorage.getItem('masaMadreEstado')) || { pasoActual: 0, tiempoInicio: null };
+let mantequillaPasoActual = 0;
 
 const pasoDescElem = document.getElementById('stepDescription');
 const tiempoRestElem = document.getElementById('timeRemaining');
 const botonHecho = document.getElementById('markDoneButton');
 const botonReset = document.getElementById('resetButton');
 const recetasContainer = document.getElementById('recetasContainer');
+
+const mantequillaPasoElem = document.getElementById('mantequillaPaso');
+const mantequillaSiguienteBtn = document.getElementById('mantequillaSiguienteBtn');
+const mantequillaRepetirBtn = document.getElementById('mantequillaRepetirBtn');
 
 function mostrarEstado() {
   if (estado.pasoActual >= pasos.length) {
@@ -233,6 +250,33 @@ function mostrarRecetas() {
     recetasContainer.appendChild(divReceta);
   });
 }
+
+function mostrarPasoMantequilla() {
+  mantequillaPasoElem.textContent = mantequillaMagicaPasos[mantequillaPasoActual];
+  if (mantequillaPasoActual >= mantequillaMagicaPasos.length -1) {
+    mantequillaSiguienteBtn.disabled = true;
+  } else {
+    mantequillaSiguienteBtn.disabled = false;
+  }
+}
+
+mantequillaSiguienteBtn.addEventListener('click', () => {
+  if (mantequillaPasoActual < mantequillaMagicaPasos.length -1) {
+    mantequillaPasoActual++;
+    mostrarPasoMantequilla();
+  }
+});
+
+mantequillaRepetirBtn.addEventListener('click', () => {
+  mantequillaPasoActual = 0;
+  mostrarPasoMantequilla();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  mostrarEstado();
+  mostrarRecetas();
+  mostrarPasoMantequilla();
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   mostrarEstado();
