@@ -130,9 +130,9 @@ const recetas = [
 // Mantequilla Mágica pasos
 const mantequillaMagicaPasos = [
   "Descarboxilar el cannabis: Hornea el material vegetal a 110-115°C durante 30-40 minutos para activar los compuestos (THC/CBD).",
-  "Derretir la mantequilla: Coloca la mantequilla en una olla junto con el agua y derrítela a fuego medio-bajo.",
-  "Agregar el cannabis: Añade el cannabis descarboxilado a la mantequilla derretida con agua.",
-  "Cocinar a fuego lento: Mantén la mezcla a fuego bajo para que hierva suavemente durante 2 a 3 horas, removiendo ocasionalmente. Esto permite que los cannabinoides se unan a la grasa de la mantequilla y que la clorofila y otros residuos se disuelvan en el agua.",
+  "Derretir la mantequilla: Coloca la mantequilla en una olla y derritela a baño maria hasta que no queden grumos",
+  "Agregar el cannabis: Añade el cannabis descarboxilado a la mantequilla derretida.",
+  "Cocinar a fuego lento: Mantén la mezcla a fuego bajo para que hierva suavemente durante 2 a 3 horas, removiendo ocasionalmente. Esto permite que los cannabinoides se unan a la grasa de la mantequilla y que la clorofila y otros residuos se disuelvan.",
   "Colar la mezcla: Usa un colador para separar los restos vegetales de la mantequilla infusionada.",
   "Enfriar y solidificar: Vierte la mezcla colada en un recipiente y refrigera durante 12 horas o hasta que la mantequilla se solidifique, separándose del agua que quedará en el fondo.",
   "Separar el agua: Una vez sólida, presiona el recipiente para soltar la mantequilla y desecha el agua.",
