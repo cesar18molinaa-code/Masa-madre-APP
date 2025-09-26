@@ -137,6 +137,7 @@ const mantequillaMagicaPasos = [
   "Enfriar y solidificar: Vierte la mezcla colada en un recipiente y refrigera durante 12 horas o hasta que la mantequilla se solidifique, separándose del agua que quedará en el fondo.",
   "Separar el agua: Una vez sólida, presiona el recipiente para soltar la mantequilla y desecha el agua.",
   "Guardar: Conserva la mantequilla mágica en un recipiente hermético en el refrigerador o congelador."
+  "Listo ya puedes usarla en tus recetas mágicas."
 ];
 
 let estado = JSON.parse(localStorage.getItem('masaMadreEstado')) || { pasoActual: 0, tiempoInicio: null };
