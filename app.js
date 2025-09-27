@@ -1,8 +1,6 @@
-// --- Datos y recetas previas (para brevedad aquí solo algunas muestras, inserta datos completos como antes) ---
-
 const pasos = [
   `Día 1:
-- Mezcla inicial: en un recipiente limpio, mezcla 100 gramos de harina con 100 mililitros de agua.
+- Mezcla inicial: en un recipiente limpio, mezcla 100 gramos de harina con 100 gramos de agua.
 - Mezcla con cuchara o espátula durante 2 minutos hasta no ver grumos y que la mezcla sea húmeda y pegajosa.
 - Cubre con un paño y deja reposar a temperatura ambiente durante 24 horas.
 
@@ -37,7 +35,6 @@ Observa burbujas pequeñas y olor ácido.`,
 - Uso y mantenimiento: usa para panificación.
 - Guarda en refrigeración y alimenta semanalmente.
 - Antes de usarla, aliméntala y déjala a temperatura ambiente para activarla.`
-
 ];
 
 const recetas = [
@@ -138,7 +135,6 @@ const recetas = [
     ]
   }
 ];
-
 
 const postres = [
   {
@@ -269,7 +265,7 @@ const postres = [
     ]
   }
 ];
-// Mantequilla Mágica pasos
+
 const mantequillaMagicaPasos = [
   "Descarboxilar el cannabis: Hornea el material vegetal a 110-115°C durante 30-40 minutos para activar los compuestos (THC/CBD).",
   "Derretir la mantequilla: Coloca la mantequilla en una olla junto con el agua y derrítela a fuego medio-bajo.",
@@ -280,15 +276,6 @@ const mantequillaMagicaPasos = [
   "Separar el agua: Una vez sólida, presiona el recipiente para soltar la mantequilla y desecha el agua.",
   "Guardar: Conserva la mantequilla mágica en un recipiente hermético en refrigerador o congelador."
 ];
-
-
-// --- Pestañas ---
-const tabMasaMadre = document.getElementById('tabMasaMadre');
-const tabPostres = document.getElementById('tabPostres');
-const tabMantequilla = document.getElementById('tabMantequilla');
-const masaMadreContent = document.getElementById('masaMadreContent');
-const postresContent = document.getElementById('postresContent');
-const mantequillaContent = document.getElementById('mantequillaContent');
 
 function cambiarPestania(pestania) {
   tabMasaMadre.classList.remove('active');
@@ -315,7 +302,6 @@ tabMasaMadre.addEventListener('click', () => cambiarPestania('masaMadre'));
 tabPostres.addEventListener('click', () => cambiarPestania('postres'));
 tabMantequilla.addEventListener('click', () => cambiarPestania('mantequilla'));
 
-// --- Variables DOM ---
 const pasoDescElem = document.getElementById('stepDescription');
 const tiempoRestElem = document.getElementById('timeRemaining');
 const botonHecho = document.getElementById('markDoneButton');
@@ -326,11 +312,9 @@ const mantequillaPasoElem = document.getElementById('mantequillaPaso');
 const mantequillaSiguienteBtn = document.getElementById('mantequillaSiguienteBtn');
 const mantequillaRepetirBtn = document.getElementById('mantequillaRepetirBtn');
 
-// --- Estado ---
 let estado = JSON.parse(localStorage.getItem('masaMadreEstado')) || { pasoActual: 0, tiempoInicio: null };
 let mantequillaPasoActual = 0;
 
-// --- Función mostrar paso masa madre ---
 function mostrarEstado() {
   if (estado.pasoActual >= pasos.length) {
     pasoDescElem.textContent =
@@ -356,12 +340,10 @@ function mostrarEstado() {
   }
 }
 
-// --- Guardar estado ---
 function guardarEstado() {
   localStorage.setItem('masaMadreEstado', JSON.stringify(estado));
 }
 
-// --- Botones paso masa madre ---
 botonHecho.addEventListener('click', () => {
   if (estado.pasoActual < pasos.length) {
     estado.pasoActual++;
@@ -370,6 +352,7 @@ botonHecho.addEventListener('click', () => {
     mostrarEstado();
   }
 });
+
 botonReset.addEventListener('click', () => {
   estado = { pasoActual: 0, tiempoInicio: null };
   guardarEstado();
@@ -377,7 +360,6 @@ botonReset.addEventListener('click', () => {
   mostrarEstado();
 });
 
-// --- Mostrar recetas con masa madre ---
 function mostrarRecetas() {
   recetasContainer.innerHTML = "";
   recetas.forEach((receta) => {
@@ -427,7 +409,6 @@ function mostrarRecetas() {
   });
 }
 
-// --- Mostrar postres sin masa madre ---
 function mostrarPostres() {
   postresContainer.innerHTML = "";
   postres.forEach((postre) => {
@@ -465,25 +446,23 @@ function mostrarPostres() {
   });
 }
 
-// --- Mostrar paso mantequilla mágica ---
 function mostrarPasoMantequilla() {
   mantequillaPasoElem.textContent = mantequillaMagicaPasos[mantequillaPasoActual];
   mantequillaSiguienteBtn.disabled = mantequillaPasoActual >= mantequillaMagicaPasos.length -1;
 }
 
-// --- Botones mantequilla ---
 mantequillaSiguienteBtn.addEventListener('click', () => {
   if (mantequillaPasoActual < mantequillaMagicaPasos.length -1) {
     mantequillaPasoActual++;
     mostrarPasoMantequilla();
   }
 });
+
 mantequillaRepetirBtn.addEventListener('click', () => {
   mantequillaPasoActual = 0;
   mostrarPasoMantequilla();
 });
 
-// --- Calculadora THC mantequilla ---
 const formMantequilla = document.getElementById("mantequillaCalcForm");
 const resultadoMantequilla = document.getElementById("mantequillaCalcResultado");
 
@@ -500,7 +479,6 @@ formMantequilla.addEventListener("submit", e => {
   resultadoMantequilla.textContent = `Estimación de THC total en mantequilla: ${thcMg.toFixed(0)} mg.`;
 });
 
-// --- Iniciar app ---
 document.addEventListener("DOMContentLoaded", () => {
   mostrarEstado();
   mostrarRecetas();
