@@ -1,3 +1,5 @@
+// --- Datos y recetas previas (para brevedad aquí solo algunas muestras, inserta datos completos como antes) ---
+
 const pasos = [
   `Día 1:
 - Mezcla inicial: en un recipiente limpio, mezcla 100 gramos de harina con 100 gramos de agua.
@@ -35,6 +37,7 @@ Observa burbujas pequeñas y olor ácido.`,
 - Uso y mantenimiento: usa para panificación.
 - Guarda en refrigeración y alimenta semanalmente.
 - Antes de usarla, aliméntala y déjala a temperatura ambiente para activarla.`
+
 ];
 
 const recetas = [
@@ -135,6 +138,7 @@ const recetas = [
     ]
   }
 ];
+
 
 const postres = [
   {
@@ -265,7 +269,6 @@ const postres = [
     ]
   }
 ];
-
 // Mantequilla Mágica pasos
 const mantequillaMagicaPasos = [
   "Descarboxilar el cannabis: Hornea el material vegetal a 110-115°C durante 30-40 minutos para activar los compuestos (THC/CBD).",
@@ -278,20 +281,56 @@ const mantequillaMagicaPasos = [
   "Guardar: Conserva la mantequilla mágica en un recipiente hermético en refrigerador o congelador."
 ];
 
-let estado = JSON.parse(localStorage.getItem('masaMadreEstado')) || { pasoActual: 0, tiempoInicio: null };
-let mantequillaPasoActual = 0;
 
+// --- Pestañas ---
+const tabMasaMadre = document.getElementById('tabMasaMadre');
+const tabPostres = document.getElementById('tabPostres');
+const tabMantequilla = document.getElementById('tabMantequilla');
+const masaMadreContent = document.getElementById('masaMadreContent');
+const postresContent = document.getElementById('postresContent');
+const mantequillaContent = document.getElementById('mantequillaContent');
+
+function cambiarPestania(pestania) {
+  tabMasaMadre.classList.remove('active');
+  tabPostres.classList.remove('active');
+  tabMantequilla.classList.remove('active');
+
+  masaMadreContent.classList.remove('active');
+  postresContent.classList.remove('active');
+  mantequillaContent.classList.remove('active');
+
+  if (pestania === 'masaMadre') {
+    tabMasaMadre.classList.add('active');
+    masaMadreContent.classList.add('active');
+  } else if (pestania === 'postres') {
+    tabPostres.classList.add('active');
+    postresContent.classList.add('active');
+  } else if (pestania === 'mantequilla') {
+    tabMantequilla.classList.add('active');
+    mantequillaContent.classList.add('active');
+  }
+}
+
+tabMasaMadre.addEventListener('click', () => cambiarPestania('masaMadre'));
+tabPostres.addEventListener('click', () => cambiarPestania('postres'));
+tabMantequilla.addEventListener('click', () => cambiarPestania('mantequilla'));
+
+// --- Variables DOM ---
 const pasoDescElem = document.getElementById('stepDescription');
 const tiempoRestElem = document.getElementById('timeRemaining');
 const botonHecho = document.getElementById('markDoneButton');
 const botonReset = document.getElementById('resetButton');
 const recetasContainer = document.getElementById('recetasContainer');
 const postresContainer = document.getElementById('postresContainer');
-
 const mantequillaPasoElem = document.getElementById('mantequillaPaso');
 const mantequillaSiguienteBtn = document.getElementById('mantequillaSiguienteBtn');
 const mantequillaRepetirBtn = document.getElementById('mantequillaRepetirBtn');
 
+// --- Estado ---
+let estado = JSON.parse(localStorage.getItem('masaMadreEstado')) || { pasoActual: 0, tiempoInicio: null };
+let mantequillaPasoActual = 0;
+
+// --- Función mostrar paso masa madre ---
 function mostrarEstado() {
   if (estado.pasoActual >= pasos.length) {
     pasoDescElem.textContent =
@@ -300,14 +339,11 @@ function mostrarEstado() {
     botonHecho.disabled = true;
     return;
   }
-
   pasoDescElem.textContent = pasos[estado.pasoActual];
-
   if (estado.tiempoInicio) {
     const tiempoTranscurrido = Date.now() - estado.tiempoInicio;
     const unDiaMs = 24 * 60 * 60 * 1000;
     const tiempoRestanteMs = unDiaMs - tiempoTranscurrido;
-
     if (tiempoRestanteMs <= 0) {
       tiempoRestElem.textContent = "¡Es hora del siguiente paso!";
     } else {
@@ -320,10 +356,12 @@ function mostrarEstado() {
   }
 }
 
+// --- Guardar estado ---
 function guardarEstado() {
   localStorage.setItem('masaMadreEstado', JSON.stringify(estado));
 }
 
+// --- Botones paso masa madre ---
 botonHecho.addEventListener('click', () => {
   if (estado.pasoActual < pasos.length) {
     estado.pasoActual++;
@@ -332,7 +370,6 @@ botonHecho.addEventListener('click', () => {
     mostrarEstado();
   }
 });
-
 botonReset.addEventListener('click', () => {
   estado = { pasoActual: 0, tiempoInicio: null };
   guardarEstado();
@@ -340,13 +377,12 @@ botonReset.addEventListener('click', () => {
   mostrarEstado();
 });
 
+// --- Mostrar recetas con masa madre ---
 function mostrarRecetas() {
   recetasContainer.innerHTML = "";
-
   recetas.forEach((receta) => {
     const divReceta = document.createElement('div');
     divReceta.className = "receta";
-
     const titulo = document.createElement('h3');
     titulo.textContent = receta.nombre;
     divReceta.appendChild(titulo);
@@ -391,13 +427,12 @@ function mostrarRecetas() {
   });
 }
 
+// --- Mostrar postres sin masa madre ---
 function mostrarPostres() {
   postresContainer.innerHTML = "";
-
   postres.forEach((postre) => {
     const divPostre = document.createElement('div');
     divPostre.className = "receta";
-
     const titulo = document.createElement('h3');
     titulo.textContent = postre.nombre;
     divPostre.appendChild(titulo);
@@ -430,27 +465,58 @@ function mostrarPostres() {
   });
 }
 
+// --- Mostrar paso mantequilla mágica ---
 function mostrarPasoMantequilla() {
   mantequillaPasoElem.textContent = mantequillaMagicaPasos[mantequillaPasoActual];
-  if (mantequillaPasoActual >= mantequillaMagicaPasos.length -1) {
-    mantequillaSiguienteBtn.disabled = true;
-  } else {
-    mantequillaSiguienteBtn.disabled = false;
-  }
+  mantequillaSiguienteBtn.disabled = mantequillaPasoActual >= mantequillaMagicaPasos.length -1;
 }
 
+// --- Botones mantequilla ---
 mantequillaSiguienteBtn.addEventListener('click', () => {
   if (mantequillaPasoActual < mantequillaMagicaPasos.length -1) {
     mantequillaPasoActual++;
     mostrarPasoMantequilla();
   }
 });
-
 mantequillaRepetirBtn.addEventListener('click', () => {
   mantequillaPasoActual = 0;
   mostrarPasoMantequilla();
 });
 
+// --- Calculadora Masa Madre ---
+const formMasaMadre = document.getElementById("masaMadreCalcForm");
+const resultadoMasaMadre = document.getElementById("masaMadreCalcResultado");
+
+formMasaMadre.addEventListener("submit", e => {
+  e.preventDefault();
+  const harina = parseFloat(document.getElementById("masaHarina").value);
+  const agua = parseFloat(document.getElementById("masaAgua").value);
+  if (isNaN(harina) || isNaN(agua) || harina < 0 || agua < 0) {
+    resultadoMasaMadre.textContent = "Por favor, ingresa valores válidos.";
+    return;
+  }
+  const totalMasa = harina + agua;
+  resultadoMasaMadre.textContent = `Se obtienen aproximadamente ${totalMasa.toFixed(1)} gramos de masa madre.`;
+});
+
+// --- Calculadora THC mantequilla ---
+const formMantequilla = document.getElementById("mantequillaCalcForm");
+const resultadoMantequilla = document.getElementById("mantequillaCalcResultado");
+
+formMantequilla.addEventListener("submit", e => {
+  e.preventDefault();
+  const gramosCannabis = parseFloat(document.getElementById("cannabisGramos").value);
+  const thcPct = parseFloat(document.getElementById("thcConcentracion").value);
+  if (isNaN(gramosCannabis) || isNaN(thcPct) || gramosCannabis < 0 || thcPct < 0 || thcPct > 100) {
+    resultadoMantequilla.textContent = "Por favor, ingresa valores válidos.";
+    return;
+  }
+  const eficiencia = 0.7;
+  const thcMg = gramosCannabis * (thcPct / 100) * 1000 * eficiencia;
+  resultadoMantequilla.textContent = `Estimación de THC total en mantequilla: ${thcMg.toFixed(0)} mg.`;
+});
+
+// --- Iniciar app ---
 document.addEventListener("DOMContentLoaded", () => {
   mostrarEstado();
   mostrarRecetas();
