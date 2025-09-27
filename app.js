@@ -2,7 +2,7 @@
 
 const pasos = [
   `Día 1:
-- Mezcla inicial: en un recipiente limpio, mezcla 100 gramos de harina con 100 gramos de agua.
+- Mezcla inicial: en un recipiente limpio, mezcla 100 gramos de harina con 100 mililitros de agua.
 - Mezcla con cuchara o espátula durante 2 minutos hasta no ver grumos y que la mezcla sea húmeda y pegajosa.
 - Cubre con un paño y deja reposar a temperatura ambiente durante 24 horas.
 
@@ -481,22 +481,6 @@ mantequillaSiguienteBtn.addEventListener('click', () => {
 mantequillaRepetirBtn.addEventListener('click', () => {
   mantequillaPasoActual = 0;
   mostrarPasoMantequilla();
-});
-
-// --- Calculadora Masa Madre ---
-const formMasaMadre = document.getElementById("masaMadreCalcForm");
-const resultadoMasaMadre = document.getElementById("masaMadreCalcResultado");
-
-formMasaMadre.addEventListener("submit", e => {
-  e.preventDefault();
-  const harina = parseFloat(document.getElementById("masaHarina").value);
-  const agua = parseFloat(document.getElementById("masaAgua").value);
-  if (isNaN(harina) || isNaN(agua) || harina < 0 || agua < 0) {
-    resultadoMasaMadre.textContent = "Por favor, ingresa valores válidos.";
-    return;
-  }
-  const totalMasa = harina + agua;
-  resultadoMasaMadre.textContent = `Se obtienen aproximadamente ${totalMasa.toFixed(1)} gramos de masa madre.`;
 });
 
 // --- Calculadora THC mantequilla ---
