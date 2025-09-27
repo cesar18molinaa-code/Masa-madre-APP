@@ -103,7 +103,7 @@
       margin-top: 10px;
       width: auto;
     }
-    #masaMadreCalcResultado, #mantequillaCalcResultado {
+    #mantequillaCalcResultado {
       margin-top: 10px;
       font-weight: bold;
       color: #2c3e50;
@@ -115,21 +115,11 @@
 
   <div class="tabs">
     <div class="tab active" id="tabMasaMadre">Masa Madre</div>
-    <div class="tab" id="tabPostres">Postres sin Masa Madre</div>
+    <div class="tab" id="tabPostres">Postres</div>
     <div class="tab" id="tabMantequilla">Mantequilla Mágica</div>
   </div>
 
   <div id="masaMadreContent" class="tab-content active">
-    <h2>Calculadora de Masa Madre</h2>
-    <form id="masaMadreCalcForm">
-      <label for="masaHarina">Gramos de Harina:</label>
-      <input type="number" id="masaHarina" min="0" value="100" required/>
-      <label for="masaAgua">Gramos de Agua:</label>
-      <input type="number" id="masaAgua" min="0" value="100" required/>
-      <button type="submit">Calcular Cantidad Total</button>
-    </form>
-    <div id="masaMadreCalcResultado"></div>
-
     <h2>Progreso Masa Madre</h2>
     <div id="stepDescription"></div>
     <div id="timeRemaining"></div>
@@ -141,7 +131,7 @@
   </div>
 
   <div id="postresContent" class="tab-content">
-    <h2>Postres sin Masa Madre</h2>
+    <h2>Postres</h2>
     <div id="postresContainer"></div>
   </div>
 
