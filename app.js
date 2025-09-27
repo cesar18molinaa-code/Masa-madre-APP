@@ -1,6 +1,6 @@
 const pasos = [
   `Día 1:
-- Mezcla inicial: en un recipiente limpio, mezcla 100 gramos de harina con 100 gramos de agua.
+- Mezcla inicial: en un recipiente limpio, mezcla 100 gramos de harina con 100 mililitros de agua.
 - Mezcla con cuchara o espátula durante 2 minutos hasta no ver grumos y que la mezcla sea húmeda y pegajosa.
 - Cubre con un paño y deja reposar a temperatura ambiente durante 24 horas.
 
